@@ -1,13 +1,15 @@
 import pygame
+import random
 from game.snake import Snake
+from game.food import Food
 
 class SnakeGame:
-
     game_height = 400
     game_width = 400
 
     def __init__(self):
         self.snake = Snake()
+        self.initializeFood()
         self.game_over = False
         self.game_gui = pygame
 
@@ -20,19 +22,38 @@ class SnakeGame:
         self.screen = self.game_gui.display.set_mode(
             (self.game_height, self.game_width))
 
+    def initializeFood(self):
+        self.food = Food(
+            random.randrange(0, self.game_width, 10),
+            random.randrange(0, self.game_height, 10)
+        )
+
     def start(self):
         print("Game Started.")
         while not self.game_over:
+            self.updateGameScreen()
             self.getEvents()
             self.getInput()
             self.updateGame()
-            self.draw()
 
     def getEvents(self):
         for event in self.game_gui.event.get():
             if event.type == self.game_gui.QUIT:
                 self.game_over = True
                 self.game_gui.quit()
+
+    def spawnFood(self):
+        print("Food: ", (self.food.x_coord, self.food.y_coord))
+        if self.food.is_eaten:
+            self.initializeFood()
+
+        pygame.draw.rect(self.screen,
+            self.food.color,
+            (self.food.x_coord,
+                self.food.y_coord,
+                self.food.width,
+                self.food.height)
+        )
 
     def updateGame(self):
         new_x_coord = self.snake.x_coord + self.snake.x_speed
@@ -50,7 +71,7 @@ class SnakeGame:
             or x_coord+10 > self.game_width
             or y_coord <= 0
             or x_coord <= 0):
-            print("NADA")
+            #print("NADA")
             return True
 
         return False
@@ -74,8 +95,8 @@ class SnakeGame:
            self.snake.y_speed = self.snake.default_speed
 
     def updateSnake(self, x_coord, y_coord):
-        print(x_coord)
-        print(y_coord)
+        #print(x_coord)
+        #print(y_coord)
 
         self.snake.x_coord = x_coord
         self.snake.y_coord = y_coord
@@ -83,9 +104,10 @@ class SnakeGame:
     def clearScreen(self):
         self.screen.fill((0, 0, 0))
 
-    def draw(self):
+    def updateGameScreen(self):
         self.clearScreen()
         self.drawSnake()
+        self.spawnFood()
         self.game_gui.display.update()
 
     def drawSnake(self):
