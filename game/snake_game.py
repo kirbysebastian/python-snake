@@ -1,7 +1,10 @@
 import pygame
 import random
+import time
+
 from game.snake import Snake
 from game.food import Food
+from utils.algorithms import *
 
 class SnakeGame:
     game_height = 400
@@ -31,12 +34,13 @@ class SnakeGame:
     def start(self):
         print("Game Started.")
         while not self.game_over:
-            self.game_gui.time.delay(90) #60
+            self.game_gui.time.delay(60) #60
             self.clock.tick(30)
             self.updateGameScreen()
             self.getEvents()
             self.getInput()
             self.updateGame()
+            #time.sleep(100.0 / 1000.0) 
 
     def getEvents(self):
         for event in self.game_gui.event.get():
@@ -45,7 +49,7 @@ class SnakeGame:
                 self.game_gui.quit()
 
     def spawnFood(self):
-        print("Food: ", (self.food.x_coord, self.food.y_coord))
+        #print("Food: ", (self.food.x_coord, self.food.y_coord))
         if self.food.is_eaten:
             self.initializeFood()
 
@@ -89,7 +93,7 @@ class SnakeGame:
            self.snake.x_speed = self.snake.default_speed
            self.snake.y_speed = 0
 
-       if key[self.game_gui.K_UP]:
+       elif key[self.game_gui.K_UP]:
            self.snake.x_speed = 0
            self.snake.y_speed = -self.snake.default_speed
        elif key[self.game_gui.K_DOWN]:
