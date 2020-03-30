@@ -12,12 +12,12 @@ class SnakeGame:
         self.initializeFood()
         self.game_over = False
         self.game_gui = pygame
+        self.clock = self.game_gui.time.Clock()
 
         self.gui_init()
 
     def gui_init(self):
         self.game_gui.init()
-        self.game_gui.time.delay(100)
         self.game_gui.display.set_caption('Python Snake')
         self.screen = self.game_gui.display.set_mode(
             (self.game_height, self.game_width))
@@ -31,6 +31,8 @@ class SnakeGame:
     def start(self):
         print("Game Started.")
         while not self.game_over:
+            self.game_gui.time.delay(90) #60
+            self.clock.tick(30)
             self.updateGameScreen()
             self.getEvents()
             self.getInput()
@@ -69,8 +71,8 @@ class SnakeGame:
     def out_of_bounce(self, x_coord, y_coord):
         if (y_coord+10 > self.game_height
             or x_coord+10 > self.game_width
-            or y_coord <= 0
-            or x_coord <= 0):
+            or y_coord < 0
+            or x_coord < 0):
             #print("NADA")
             return True
 
@@ -106,8 +108,8 @@ class SnakeGame:
 
     def updateGameScreen(self):
         self.clearScreen()
-        self.drawSnake()
         self.spawnFood()
+        self.drawSnake()
         self.game_gui.display.update()
 
     def drawSnake(self):

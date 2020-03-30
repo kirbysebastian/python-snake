@@ -1,7 +1,7 @@
 
 class Snake:
     def __init__(self):
-        self.default_speed = 0.05
+        self.default_speed = 10
         self.x_speed = self.default_speed
         self.y_speed = 0
         self.px_img = ''
