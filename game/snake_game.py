@@ -34,11 +34,12 @@ class SnakeGame:
     def start(self):
         print("Game Started.")
         while not self.game_over:
-            self.game_gui.time.delay(60) #60
+            self.game_gui.time.delay(90) #60
             self.clock.tick(30)
             self.updateGameScreen()
             self.getEvents()
             self.getInput()
+            self.checkFood()
             self.updateGame()
             #time.sleep(100.0 / 1000.0) 
 
@@ -72,6 +73,11 @@ class SnakeGame:
         #print("X: ", self.snake.x_speed)
         #print("Y: ", self.snake.y_speed)
 
+    def checkFood(self):
+        if isFoodEaten(self.snake.x_coord, self.snake.y_coord,
+                self.food.x_coord, self.food.y_coord):
+            self.initializeFood()
+
     def out_of_bounce(self, x_coord, y_coord):
         if (y_coord+10 > self.game_height
             or x_coord+10 > self.game_width
@@ -89,14 +95,14 @@ class SnakeGame:
        if key[self.game_gui.K_LEFT]:
            self.snake.x_speed = -self.snake.default_speed
            self.snake.y_speed = 0
-       elif key[self.game_gui.K_RIGHT]:
+       if key[self.game_gui.K_RIGHT]:
            self.snake.x_speed = self.snake.default_speed
            self.snake.y_speed = 0
 
-       elif key[self.game_gui.K_UP]:
+       if key[self.game_gui.K_UP]:
            self.snake.x_speed = 0
            self.snake.y_speed = -self.snake.default_speed
-       elif key[self.game_gui.K_DOWN]:
+       if key[self.game_gui.K_DOWN]:
            self.snake.x_speed = 0
            self.snake.y_speed = self.snake.default_speed
 

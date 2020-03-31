@@ -12,3 +12,8 @@ def getDirection(x_speed, y_speed):
         elif x_speed < 0:
             return Direction.RIGHT
 
+def isFoodEaten(x_snake_pos, y_snake_pos,
+        x_food_pos, y_food_pos):
+    return (x_snake_pos == x_food_pos and
+            y_snake_pos == y_food_pos)
+
